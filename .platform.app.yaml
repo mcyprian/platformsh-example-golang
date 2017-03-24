@@ -1,0 +1,29 @@
+name: app
+
+type: golang:1.8
+
+hooks:
+    build: |
+      make setup
+      # Remove the following line if committing your vendor directory.
+      make deps
+      make
+
+relationships:
+    mysql: "mysql:mysql"
+
+web:
+    upstream:
+        socket_family: tcp
+        protocol: http
+
+    commands:
+        start: |
+          ./bin/example
+
+    locations:
+        /:
+            allow: false
+            passthru: true
+
+disk: 1024
